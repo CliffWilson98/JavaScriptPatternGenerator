@@ -14,14 +14,16 @@ var canvas;
 class Player
 {
 	//constructor must know x and y cordinates along with the height and width of object
-		constructor(x, y, width, height)
+		constructor(x, y, width, height, color)
 		{
 			this.x = x;
 			this.y = y;
 			this.width = width;
 			this.height = height;
+			this.color = color;
 			this.xVelocity = xVelocity;
 			this.yVelocity = yVelocity;
+			this.isVisible = false;
 		}
 
 }
@@ -29,23 +31,21 @@ class Player
 function initializeData ()
 {
 	canvas = document.getElementById("gameCanvas").getContext("2d");
-	player = new Player(0, 0, 32, 32);
-	player2 = new Player(468, 468, 32, 32);
-	//player3 = new Player(468, 0, 32, 32);
-	//player4 = new Player(0, 469, 32, 32);
+	document.getElementById("Box1").checked = true;
+	player = new Player(0, 0, 32, 32, "yellow");
+	player2 = new Player(468, 468, 32, 32, "blue");
+	player3 = new Player(468, 0, 32, 32, "red");
+	player4 = new Player(0, 468, 32, 32, "green");
 }
 
-function drawPlayer ()
+function drawPlayer (player)
 {
 	//drawBackground();
-	canvas.fillStyle = "yellow";
-	canvas.fillRect(player.x, player.y, player.width, player.height);
-	canvas.fillStyle = "blue";
-	canvas.fillRect(player2.x, player2.y, player2.width, player2.height);
-	/*canvas.fillStyle = "red";
-	canvas.fillRect(player3.x, player3.y, player3.width, player3.height);
-	canvas.fillStyle = "green";
-	canvas.fillRect(player4.x, player4.y, player4.width, player4.height);*/
+	if (player.isVisible == true)
+	{
+		canvas.fillStyle = player.color;//"yellow";
+		canvas.fillRect(player.x, player.y, player.width, player.height);
+	}
 }
 
 function drawBackground()
@@ -70,12 +70,73 @@ function movePlayer(player)
 
 function gameLoop()
 {
-	drawPlayer();
+	drawPlayer(player);
+	drawPlayer(player2);
+	drawPlayer(player3);
+	drawPlayer(player4);
 	movePlayer(player);
 	movePlayer(player2);
-	//movePlayer(player3);
-	//movePlayer(player4);
+	movePlayer(player3);
+	movePlayer(player4);
+	checkBoxManager();
 }
+
+function restart()
+{
+	drawBackground();
+	player.x = 0;
+	player.y = 0;
+	player.xVelocity = 2;
+	player.yVelocity = 2;
+	player2.x = 468;
+	player2.y = 468;
+	player2.xVelocity = 2;
+	player2.yVelocity = 2;
+	player3.x = 468;
+	player3.y = 0;
+	player3.xVelocity = 2;
+	player3.yVelocity = 2;
+	player4.x = 0;
+	player4.y = 468;
+	player4.xVelocity = 2;
+	player4.yVelocity = 2;
+}
+
+function randomPositionSpawn()
+{
+	drawBackground();
+	player.x = Math.random() * 468;
+	player.y = Math.random() * 468;
+	player2.x = Math.random() * 468;
+	player2.y = Math.random() * 468;
+	player3.x = Math.random() * 468;
+	player3.y = Math.random() * 468;
+	player4.x = Math.random() * 468;
+	player4.y = Math.random() * 468;
+}
+
+function randomizeVelocity()
+{
+	drawBackground();
+	player.x = 0;
+	player.y = 0;
+	player2.x = 468;
+	player2.y = 468;
+	player.xVelocity = Math.random() * 10;
+	player.yVelocity = Math.random() * 10;
+	player2.xVelocity = Math.random() * 10;
+	player2.yVelocity = Math.random() * 10;
+}
+
+function checkBoxManager()
+{
+	player.isVisible = document.getElementById("Box1").checked;
+	player2.isVisible = document.getElementById("Box2").checked;
+	player3.isVisible = document.getElementById("Box3").checked;
+	player4.isVisible = document.getElementById("Box4").checked;
+}
+
+
 
 	window.onload = function()
 	{

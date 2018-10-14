@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <style>
 
+html {
+		text-align: center;
+}
+
 body{
-	  background-color: #C6E2FF;
+	background-color: #C6E2FF;
 }
 
 button{
@@ -16,9 +20,17 @@ button{
 <script src="patternGenerator.js"></script>
 <body>
 
-	<h1> JAVASCRIPT PATTERN GENERATOR </h1>
+	<h1 style = "padding-top: 10px"> JAVASCRIPT PATTERN GENERATOR </h1>
+
 	<p> The following buttons allow you to modify the behavior of the squares. </p>
-	<h2> <button>Random Position Spawn</button></h2>
+
+	<h2> <button onclick="restart()">Restart Simulation</button> | <button onclick="randomPositionSpawn()">Random Position Spawn</button> | <button onclick="randomizeVelocity()">Random Velocity</button></h2>
+	<h3>
+		<input type="checkbox" name="playerCheckBox" value="Box1" id = "Box1"> Box 1
+		<input type="checkbox" name="playerCheckBox" value="Box2" id = "Box2"> Box 2
+		<input type="checkbox" name="playerCheckBox" value="Box3" id = "Box3"> Box 3
+		<input type="checkbox" name="playerCheckBox" value="Box4" id = "Box4"> Box 4
+	</h3>
 	<canvas id="gameCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
 
 </body>
