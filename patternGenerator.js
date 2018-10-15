@@ -2,12 +2,13 @@
 var canvasHeight = 500;
 var canvasWidth = 500;
 //variables to control speed of objects
-var xVelocity = 2//Math.random() * 10;
-var yVelocity = 2//Math.random() * 10;
+var xVelocity = 2
+var yVelocity = 2
 //variables to hold the player objects
 var player, player2//, player3, player4;
 //variable to hold the canvas
 var canvas;
+var trailOn;
 
 //class to model the elements which will bounce off of the walls.
 //They will be referred to as Players.
@@ -32,6 +33,7 @@ function initializeData ()
 {
 	canvas = document.getElementById("gameCanvas").getContext("2d");
 	document.getElementById("Box1").checked = true;
+	document.getElementById("trail").checked = true;
 	player = new Player(0, 0, 32, 32, "yellow");
 	player2 = new Player(468, 468, 32, 32, "blue");
 	player3 = new Player(468, 0, 32, 32, "red");
@@ -70,6 +72,10 @@ function movePlayer(player)
 
 function gameLoop()
 {
+	if (trailOn == false)
+	{
+		drawBackground();
+	}
 	drawPlayer(player);
 	drawPlayer(player2);
 	drawPlayer(player3);
@@ -118,32 +124,45 @@ function randomPositionSpawn()
 function randomizeVelocity()
 {
 	drawBackground();
-	player.x = 0;
-	player.y = 0;
-	player2.x = 468;
-	player2.y = 468;
 	player.xVelocity = Math.random() * 10;
 	player.yVelocity = Math.random() * 10;
 	player2.xVelocity = Math.random() * 10;
 	player2.yVelocity = Math.random() * 10;
+	player3.xVelocity = Math.random() * 10;
+	player3.yVelocity = Math.random() * 10;
+	player4.xVelocity = Math.random() * 10;
+	player4.yVelocity = Math.random() * 10;
+}
+
+function randomizeVelocitySynced()
+{
+	drawBackground();
+	player.xVelocity = Math.random() * 10;
+	player.yVelocity = Math.random() * 10;
+	player2.xVelocity = 	player.xVelocity ;
+	player2.yVelocity = 	player.yVelocity;
+	player3.xVelocity = 	player.xVelocity ;
+	player3.yVelocity = 	player.yVelocity;
+	player4.xVelocity = 	player.xVelocity ;
+	player4.yVelocity = 	player.yVelocity;
+
 }
 
 function checkBoxManager()
 {
+	trailOn = document.getElementById("trail").checked;
 	player.isVisible = document.getElementById("Box1").checked;
 	player2.isVisible = document.getElementById("Box2").checked;
 	player3.isVisible = document.getElementById("Box3").checked;
 	player4.isVisible = document.getElementById("Box4").checked;
 }
 
+window.onload = function()
+{
+	initializeData();
 
+	drawBackground();
 
-	window.onload = function()
-	{
-		initializeData();
-
-		drawBackground();
-
-		var framesPerSecond = 60;
-		setInterval (function () {gameLoop()}, 1000/framesPerSecond);
-	}
+	var framesPerSecond = 60;
+	setInterval (function () {gameLoop()}, 1000/framesPerSecond);
+}
