@@ -8,13 +8,15 @@ var yVelocity = 2
 var player, player2//, player3, player4;
 //variable to hold the canvas
 var canvas;
+//variable to keep track of whether a trail should be
+//displayed for the moving squares.
 var trailOn;
 
 //class to model the elements which will bounce off of the walls.
 //They will be referred to as Players.
 class Player
 {
-	//constructor must know x and y cordinates along with the height and width of object
+	//constructor must know x and y cordinates, height, width, and color
 		constructor(x, y, width, height, color)
 		{
 			this.x = x;
@@ -29,6 +31,10 @@ class Player
 
 }
 
+//function to initialize the essential game data.
+//A reference is made to the html canvas element and
+//the status of the checkboxes is checked. The four square
+//objects are created also.
 function initializeData ()
 {
 	canvas = document.getElementById("gameCanvas").getContext("2d");
@@ -40,22 +46,28 @@ function initializeData ()
 	player4 = new Player(0, 468, 32, 32, "green");
 }
 
+//the drawPlayer function will check to see if the player is visible or not
+// and fill the canvas at the players coordinates with the appropriate color.
 function drawPlayer (player)
 {
-	//drawBackground();
 	if (player.isVisible == true)
 	{
-		canvas.fillStyle = player.color;//"yellow";
+		canvas.fillStyle = player.color;
 		canvas.fillRect(player.x, player.y, player.width, player.height);
 	}
 }
 
+//function which will fill the background of the canvas in
 function drawBackground()
 {
 	canvas.fillStyle = "#008080";
 	canvas.fillRect(0,0,canvasHeight,canvasWidth);
 }
 
+//the movePlayer function is responsible for moving the squares and keeping them
+//within the bounds of the canvas. If their x or y coordinates go out of
+//the bounds of the canvas then their velocity in the given direction is
+//reversed to create a bouncing off of the walls effect.
 function movePlayer(player)
 {
 	if (player.x > 468 || player.x < 0)
@@ -70,12 +82,17 @@ function movePlayer(player)
 	player.y += player.yVelocity;
 }
 
+//the game loop will loop infinitely.
 function gameLoop()
 {
+	//if the players should not displaay a trail then the drawBackground function
+	//is called in order to redraw the background. This will get rid of any trail
+	//that has been left by the squares.
 	if (trailOn == false)
 	{
 		drawBackground();
 	}
+	//the four squares are drawn and moved
 	drawPlayer(player);
 	drawPlayer(player2);
 	drawPlayer(player3);
@@ -84,9 +101,11 @@ function gameLoop()
 	movePlayer(player2);
 	movePlayer(player3);
 	movePlayer(player4);
+	//the checkBoxManager will update the status of the checkboxes.
 	checkBoxManager();
 }
 
+//restart sets the simulation back to how it was on page load.
 function restart()
 {
 	drawBackground();
@@ -108,6 +127,7 @@ function restart()
 	player4.yVelocity = 2;
 }
 
+//randomPositionSpawn will spawn each square at a random position
 function randomPositionSpawn()
 {
 	drawBackground();
@@ -121,6 +141,7 @@ function randomPositionSpawn()
 	player4.y = Math.random() * 468;
 }
 
+//randomizeVelocity will get every square a different random velocity
 function randomizeVelocity()
 {
 	drawBackground();
@@ -134,6 +155,8 @@ function randomizeVelocity()
 	player4.yVelocity = Math.random() * 10;
 }
 
+//randomizeVelocitySynced will assign the first square a random velocity
+//and then assign every other square the same speed.
 function randomizeVelocitySynced()
 {
 	drawBackground();
@@ -148,6 +171,8 @@ function randomizeVelocitySynced()
 
 }
 
+//checkBoxManager will keep track of whether or not the different checkboxes are
+//checked and alter the javascript variables accordingly.
 function checkBoxManager()
 {
 	trailOn = document.getElementById("trail").checked;
@@ -157,12 +182,14 @@ function checkBoxManager()
 	player4.isVisible = document.getElementById("Box4").checked;
 }
 
+//when the window is loaded the data is initialized and the canvas background
+//is drawn. The gameLoop is then set to run 60 times every second.
 window.onload = function()
 {
 	initializeData();
 
 	drawBackground();
 
-	var framesPerSecond = 60;
+	let framesPerSecond = 60;
 	setInterval (function () {gameLoop()}, 1000/framesPerSecond);
 }
